@@ -20,6 +20,7 @@ class CalculationEngineTest extends PHPUnit_Framework_TestCase {
         $objPHPExcel = $this->loadWorkbook();
 
         $this->assertEquals(1, $objPHPExcel->getSheetCount());
+        $this->assertNotNull($objPHPExcel->getSheetCount());
     }
 
     public function testLabels()
