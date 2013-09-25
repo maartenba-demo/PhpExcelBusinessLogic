@@ -5,4 +5,5 @@ Demo project for PhpStorm. I will use this one during the [Webinar: Version Cont
 
 The webinar is on October 2nd, 2013.
 
-Feel free to use the code in your own projects.
+Cheers,
+[Maarten](http://twitter.com/maartenballiauw)
