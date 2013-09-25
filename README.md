@@ -6,4 +6,5 @@ An explanation of the project's functionality can be found [on my blog](http://b
 
 The webinar is on October 2nd, 2013.
 
-Feel free to use the code in your own projects.
+Cheers,<br />
+[Maarten](http://twitter.com/maartenballiauw)
