@@ -1,0 +1,9 @@
+{
+    "autoload": {
+        "psr-0": {"App": "app/"}
+    },
+    "require": {
+        "phpexcel/phpexcel": "v1.7.7",
+        "phpunit/phpunit": "3.7.22"
+    }
+}

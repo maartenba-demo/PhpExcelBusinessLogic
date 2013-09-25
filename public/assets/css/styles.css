@@ -1,0 +1,32 @@
+html, body, p
+{
+    font-family: Arial, Helvetica, Sans-Serif;
+    font-size: 10pt;
+}
+h1
+{
+    font-size: 26pt;
+    font-weight: bold;
+    color: #333333;
+}
+#carPicture
+{
+    position: relative;
+}
+#calculationForm
+{
+    background-color: #EEEEEE;
+    margin: 0;
+    width: 100%;
+}
+table
+{
+    padding: 5px;
+    width: 100%;
+}
+table th
+{
+    width: 200px;
+    text-align: left;
+    font-weight: bold;
+}
