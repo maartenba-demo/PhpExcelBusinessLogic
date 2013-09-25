@@ -36,10 +36,10 @@
  *
  * @package    PHP_TokenStream
  * @subpackage Tests
- * @author     Laurent Laville <pear@laurent-laville.org>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2009-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @since      File available since Release 1.0.2
+ * @since      File available since Release 1.0.0
  */
 
 if (!defined('TEST_FILES_PATH')) {
@@ -53,65 +53,77 @@ if (!defined('TEST_FILES_PATH')) {
 require_once 'PHP/Token/Stream.php';
 
 /**
- * Tests for the PHP_Token_REQUIRE_ONCE, PHP_Token_REQUIRE
- * PHP_Token_INCLUDE_ONCE and PHP_Token_INCLUDE_ONCE classes.
+ * Tests for the PHP_Token_FUNCTION class.
  *
  * @package    PHP_TokenStream
  * @subpackage Tests
- * @author     Laurent Laville <pear@laurent-laville.org>
+ * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2009-2013 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @version    Release: @package_version@
  * @link       http://github.com/sebastianbergmann/php-token-stream/
- * @since      Class available since Release 1.0.2
+ * @since      Class available since Release 1.0.0
  */
-class PHP_Token_IncludeTest extends PHPUnit_Framework_TestCase
+class PHP_Token_ClosureTest extends PHPUnit_Framework_TestCase
 {
-    protected $ts;
+    protected $functions;
 
     protected function setUp()
     {
-        $this->ts = new PHP_Token_Stream(TEST_FILES_PATH . 'source3.php');
+        $ts = new PHP_Token_Stream(TEST_FILES_PATH . 'closure.php');
+
+        foreach ($ts as $token) {
+            if ($token instanceof PHP_Token_FUNCTION) {
+                $this->functions[] = $token;
+            }
+        }
     }
 
     /**
-     * @covers PHP_Token_Includes::getName
-     * @covers PHP_Token_Includes::getType
+     * @covers PHP_Token_FUNCTION::getArguments
      */
-    public function testGetIncludes()
+    public function testGetArguments()
     {
-        $this->assertSame(
-          array('test4.php', 'test3.php', 'test2.php', 'test1.php'),
-          $this->ts->getIncludes()
-        );
+        $this->assertEquals(array('$foo' => null, '$bar' => null), $this->functions[0]->getArguments());
+        $this->assertEquals(array('$foo' => 'Foo', '$bar' => null), $this->functions[1]->getArguments());
+        $this->assertEquals(array('$foo' => null, '$bar' => null, '$baz' => null), $this->functions[2]->getArguments());
+        $this->assertEquals(array('$foo' => 'Foo', '$bar' => null, '$baz' => null), $this->functions[3]->getArguments());
+        $this->assertEquals(array(), $this->functions[4]->getArguments());
+        $this->assertEquals(array(), $this->functions[5]->getArguments());
     }
 
     /**
-     * @covers PHP_Token_Includes::getName
-     * @covers PHP_Token_Includes::getType
+     * @covers PHP_Token_FUNCTION::getName
      */
-    public function testGetIncludesCategorized()
+    public function testGetName()
     {
-        $this->assertSame(
-          array(
-            'require_once' => array('test4.php'),
-            'require'      => array('test3.php'),
-            'include_once' => array('test2.php'),
-            'include'      => array('test1.php')
-          ),
-          $this->ts->getIncludes(TRUE)
-        );
+        $this->assertEquals('anonymous function', $this->functions[0]->getName());
+        $this->assertEquals('anonymous function', $this->functions[1]->getName());
+        $this->assertEquals('anonymous function', $this->functions[2]->getName());
+        $this->assertEquals('anonymous function', $this->functions[3]->getName());
+        $this->assertEquals('anonymous function', $this->functions[4]->getName());
+        $this->assertEquals('anonymous function', $this->functions[5]->getName());
     }
 
     /**
-     * @covers PHP_Token_Includes::getName
-     * @covers PHP_Token_Includes::getType
+     * @covers PHP_Token::getLine
      */
-    public function testGetIncludesCategory()
+    public function testGetLine()
     {
-        $this->assertSame(
-          array('test4.php'),
-          $this->ts->getIncludes(TRUE, 'require_once')
-        );
+        $this->assertEquals(2, $this->functions[0]->getLine());
+        $this->assertEquals(3, $this->functions[1]->getLine());
+        $this->assertEquals(4, $this->functions[2]->getLine());
+        $this->assertEquals(5, $this->functions[3]->getLine());
+    }
+
+    /**
+     * @covers PHP_TokenWithScope::getEndLine
+     */
+    public function testGetEndLine()
+    {
+        $this->assertEquals(2, $this->functions[0]->getLine());
+        $this->assertEquals(3, $this->functions[1]->getLine());
+        $this->assertEquals(4, $this->functions[2]->getLine());
+        $this->assertEquals(5, $this->functions[3]->getLine());
     }
 }
