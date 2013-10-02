@@ -9,4 +9,6 @@ The webinar is on October 2nd, 2013.
 Contact info
 ============
 Find me on Twitter: [@maartenballiauw](http://twitter.com/maartenballiauw)
-Just Test it ;)
+
+The Webinar is just AWESOME
+============
